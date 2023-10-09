@@ -10,10 +10,12 @@ import com.pos.javapos.authentication.repository.RoleRepository;
 import com.pos.javapos.authentication.repository.UserRepository;
 import com.pos.javapos.authentication.service.UserDetailsImpl;
 import com.pos.javapos.authentication.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -44,6 +46,8 @@ public class UserServiceImpl implements UserService {
     public void addRoleToUser(Long user_id,String role_name){
         User user = userRepository.findById(user_id).orElseThrow(() -> new RuntimeException("User not found"));
         Role role = roleRepository.findByName(role_name).orElseThrow(() -> new RuntimeException("Role not found"));
+        log.info("Adding role {} to user {}", role_name, user.getUsername());
         user.assignRoleToUser(role);
+//        role.getUsers().add(user);
     }
 }

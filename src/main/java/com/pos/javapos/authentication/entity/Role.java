@@ -25,39 +25,36 @@ public class Role {
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "permission_role",
-            joinColumns = {@JoinColumn(name = "permission_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private Set<Permission> permissions = new HashSet<>();
-
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return getId() != null && Objects.equals(getId(), role.getId());
+        return Objects.equals(id, role.id) && Objects.equals(name, role.name) && Objects.equals(users, role.users);
     }
 
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public int hashCode() {
+        return Objects.hash(id, name, users);
     }
 
-    public void assignPermissionToRole(Permission permission){
-        this.permissions.add(permission);
-        permission.getRoles().add(this);
-    }
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "permission_role",
+//            joinColumns = {@JoinColumn(name = "permission_id", referencedColumnName = "id")},
+//            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+//    private Set<Permission> permissions = new HashSet<>();
 
-
-
-    public void removeRoleFromUser(Permission permission){
-        this.permissions.remove(permission);
-        permission.getRoles().remove(this);
-    }
+    //    public void assignPermissionToRole(Permission permission){
+//        this.permissions.add(permission);
+//        permission.getRoles().add(this);
+//    }
+//
+//
+//
+//    public void removePermissionFromRole(Permission permission){
+//        this.permissions.remove(permission);
+//        permission.getRoles().remove(this);
+//    }
 
 
 }
