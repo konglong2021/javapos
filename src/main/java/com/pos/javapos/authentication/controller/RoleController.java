@@ -1,5 +1,6 @@
 package com.pos.javapos.authentication.controller;
 
+import com.pos.javapos.authentication.dto.RoleDto;
 import com.pos.javapos.authentication.dto.addPermissionRoleDto;
 import com.pos.javapos.authentication.entity.Role;
 import com.pos.javapos.authentication.service.RoleService;
@@ -17,9 +18,9 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/addRole/{name}")
-     public Role addRole(@PathVariable String name){
-       return roleService.addRole(name);
+    @PostMapping("/addRole")
+     public Role addRole(@RequestBody RoleDto roleDto){
+       return roleService.addRole(roleDto.getName());
      }
 
      @PostMapping("/addPermissionToRole")
@@ -29,5 +30,12 @@ public class RoleController {
                  new ApiResponse(addPermissionToRole, "Permission added to role", null)
          );
      }
+
+     @GetMapping("/findAll")
+    public ResponseEntity<?> findAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse(true, "Roles List", roleService.findAll())
+        );
+    }
 
 }

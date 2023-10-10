@@ -30,13 +30,10 @@ public class testController {
     public String test(){
 
         SecurityContext context = SecurityContextHolder.getContext();
-
         // Retrieve the Authentication object
         Authentication authentication = context.getAuthentication();
-
         if (authentication != null && authentication.isAuthenticated()) {
             // You have an authenticated user
-
             // Retrieve the username
             String username = authentication.getName();
             UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();

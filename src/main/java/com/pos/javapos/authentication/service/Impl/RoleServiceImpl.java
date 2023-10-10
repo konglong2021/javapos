@@ -6,7 +6,10 @@ import com.pos.javapos.authentication.repository.PermissionRepository;
 import com.pos.javapos.authentication.repository.RoleRepository;
 import com.pos.javapos.authentication.service.RoleService;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -39,6 +42,11 @@ public class RoleServiceImpl implements RoleService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Role> findAll() {
+        return roleRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
 
