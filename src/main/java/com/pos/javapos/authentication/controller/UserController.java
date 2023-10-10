@@ -2,6 +2,7 @@ package com.pos.javapos.authentication.controller;
 
 import com.pos.javapos.authentication.dto.UserRoleDto;
 import com.pos.javapos.authentication.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ public class UserController {
     }
 
     @PostMapping("/addRoleToUser")
+    @PreAuthorize("hasAuthority('user_access')")
     public void addRoleToUser(@RequestBody UserRoleDto userRoleDto){
         try{
             userService.addRoleToUser(userRoleDto.getUser_id(),userRoleDto.getRole_name());

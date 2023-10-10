@@ -23,6 +23,6 @@ public class JwtToUserConverter implements Converter<Jwt, UsernamePasswordAuthen
     public UsernamePasswordAuthenticationToken convert(Jwt jwt) {
         User user = userRepository.findById(Long.parseLong(jwt.getSubject())).orElseThrow(() -> new BadCredentialsException("User not found"));
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
-        return new UsernamePasswordAuthenticationToken(userDetails,jwt, Collections.emptyList() );
+        return new UsernamePasswordAuthenticationToken(userDetails,jwt,userDetails.getAuthorities());
     }
 }

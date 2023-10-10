@@ -20,7 +20,7 @@ public class Permission {
 
     private String name;
 
-//    @ManyToMany(mappedBy = "permissions",fetch = FetchType.LAZY)
-//    private Set<Role> roles = new HashSet<>();
+    @ManyToMany(mappedBy = "permissions",fetch = FetchType.LAZY)
+    private Set<Role> roles = new HashSet<>();
 
 }

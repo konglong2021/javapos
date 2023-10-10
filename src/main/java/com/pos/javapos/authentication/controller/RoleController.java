@@ -1,15 +1,33 @@
 package com.pos.javapos.authentication.controller;
 
+import com.pos.javapos.authentication.dto.addPermissionRoleDto;
 import com.pos.javapos.authentication.entity.Role;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.pos.javapos.authentication.service.RoleService;
+import com.pos.javapos.helper.ApiResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/roles")
 public class RoleController {
+    private RoleService roleService;
 
-    void addRoleToUser(Role role){
-
+    public RoleController(RoleService roleService) {
+        this.roleService = roleService;
     }
+
+    @GetMapping("/addRole/{name}")
+     public Role addRole(@PathVariable String name){
+       return roleService.addRole(name);
+     }
+
+     @PostMapping("/addPermissionToRole")
+     public ResponseEntity<?> addPermissionToRole(@RequestBody addPermissionRoleDto addPermissionRoleDto){
+         Boolean addPermissionToRole = roleService.addPermissionToRole(addPermissionRoleDto.getRoleName(), addPermissionRoleDto.getPermissionName());
+         return ResponseEntity.status(HttpStatus.CREATED).body(
+                 new ApiResponse(addPermissionToRole, "Permission added to role", null)
+         );
+     }
 
 }

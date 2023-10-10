@@ -1,6 +1,9 @@
 package com.pos.javapos.authentication.service;
 
+import com.pos.javapos.authentication.entity.Permission;
+import com.pos.javapos.authentication.entity.Role;
 import com.pos.javapos.authentication.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
+@Slf4j
 public class UserDetailsImpl implements UserDetails {
     private final User user;
 
@@ -18,12 +23,15 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        for (UserRole role : user.getRoles()) {
-//            authorities.add(new SimpleGrantedAuthority(role.getName()));
-//        }
-//        return authorities;
-        return null;
+        Set<Role> roles = user.getRoles();
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        roles.forEach(role -> {
+            role.getPermissions().forEach(permission -> {
+                authorities.add(new SimpleGrantedAuthority(permission.getName()));
+            });
+        });
+        return authorities;
+
     }
 
     @Override

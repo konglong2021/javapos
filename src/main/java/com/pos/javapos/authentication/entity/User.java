@@ -3,10 +3,10 @@ package com.pos.javapos.authentication.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -37,12 +37,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(user_object, user.user_object) && Objects.equals(roles, user.roles);
+        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(user_object, user.user_object);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, user_object, roles);
+        return Objects.hash(id, username, user_object);
     }
 
     public void assignRoleToUser(Role role){
@@ -54,4 +54,5 @@ public class User {
         this.roles.remove(role);
         role.getUsers().remove(this);
     }
+
 }

@@ -3,6 +3,7 @@ package com.pos.javapos.authentication.service.Impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pos.javapos.authentication.dto.SignupDto;
+import com.pos.javapos.authentication.dto.UserDto;
 import com.pos.javapos.authentication.entity.Role;
 import com.pos.javapos.authentication.entity.User;
 import com.pos.javapos.authentication.mapper.UserMapper;
@@ -10,9 +11,14 @@ import com.pos.javapos.authentication.repository.RoleRepository;
 import com.pos.javapos.authentication.repository.UserRepository;
 import com.pos.javapos.authentication.service.UserDetailsImpl;
 import com.pos.javapos.authentication.service.UserService;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+
 
 @Service
 @Slf4j
@@ -43,11 +49,15 @@ public class UserServiceImpl implements UserService {
         return new UserDetailsImpl(userRepository.save(user));
     }
 
+    @Transactional
     public void addRoleToUser(Long user_id,String role_name){
         User user = userRepository.findById(user_id).orElseThrow(() -> new RuntimeException("User not found"));
         Role role = roleRepository.findByName(role_name).orElseThrow(() -> new RuntimeException("Role not found"));
-        log.info("Adding role {} to user {}", role_name, user.getUsername());
         user.assignRoleToUser(role);
-//        role.getUsers().add(user);
+    }
+
+    @Override
+    public UserDto getUserByUsername(String username) {
+        return null;
     }
 }

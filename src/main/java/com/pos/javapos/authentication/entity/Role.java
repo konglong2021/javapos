@@ -19,6 +19,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false,unique = true,length = 50)
     private String name;
 
     @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
@@ -30,31 +31,31 @@ public class Role {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return Objects.equals(id, role.id) && Objects.equals(name, role.name) && Objects.equals(users, role.users);
+        return Objects.equals(id, role.id) && Objects.equals(name, role.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, users);
+        return Objects.hash(id, name);
     }
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "permission_role",
-//            joinColumns = {@JoinColumn(name = "permission_id", referencedColumnName = "id")},
-//            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-//    private Set<Permission> permissions = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "permission_role",
+            joinColumns = {@JoinColumn(name = "permission_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    private Set<Permission> permissions = new HashSet<>();
 
-    //    public void assignPermissionToRole(Permission permission){
-//        this.permissions.add(permission);
-//        permission.getRoles().add(this);
-//    }
-//
-//
-//
-//    public void removePermissionFromRole(Permission permission){
-//        this.permissions.remove(permission);
-//        permission.getRoles().remove(this);
-//    }
+        public void assignPermissionToRole(Permission permission){
+        this.permissions.add(permission);
+        permission.getRoles().add(this);
+    }
+
+
+
+    public void removePermissionFromRole(Permission permission){
+        this.permissions.remove(permission);
+        permission.getRoles().remove(this);
+    }
 
 
 }
