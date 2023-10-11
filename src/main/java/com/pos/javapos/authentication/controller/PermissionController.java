@@ -23,4 +23,11 @@ public class PermissionController {
                 new ApiResponse(true, "Permission added", permissionService.addPermission(permissionDto.getName()))
         );
     }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<?> findAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse(true, "Permissions List", permissionService.findAll())
+        );
+    }
 }

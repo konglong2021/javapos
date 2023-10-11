@@ -25,9 +25,17 @@ public class RoleController {
 
      @PostMapping("/addPermissionToRole")
      public ResponseEntity<?> addPermissionToRole(@RequestBody addPermissionRoleDto addPermissionRoleDto){
-         Boolean addPermissionToRole = roleService.addPermissionToRole(addPermissionRoleDto.getRoleName(), addPermissionRoleDto.getPermissionName());
+         Boolean addPermissionToRole = roleService.addPermissionToRole(addPermissionRoleDto.getRole_id(),addPermissionRoleDto.getPermission_id());
          return ResponseEntity.status(HttpStatus.CREATED).body(
                  new ApiResponse(addPermissionToRole, "Permission added to role", null)
+         );
+     }
+
+     @PostMapping("/removePermissionFromRole")
+     public ResponseEntity<?> removePermissionFromRole(@RequestBody addPermissionRoleDto addPermissionRoleDto){
+         Boolean removePermissionFromRole = roleService.removePermissionFromRole(addPermissionRoleDto.getRole_id(),addPermissionRoleDto.getPermission_id());
+         return ResponseEntity.status(HttpStatus.CREATED).body(
+                 new ApiResponse(removePermissionFromRole, "Permission removed from role", null)
          );
      }
 

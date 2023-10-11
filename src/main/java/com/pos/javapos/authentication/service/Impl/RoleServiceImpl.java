@@ -1,5 +1,7 @@
 package com.pos.javapos.authentication.service.Impl;
 
+import com.pos.javapos.authentication.dto.PermissionDto;
+import com.pos.javapos.authentication.dto.RoleDto;
 import com.pos.javapos.authentication.entity.Permission;
 import com.pos.javapos.authentication.entity.Role;
 import com.pos.javapos.authentication.repository.PermissionRepository;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,11 +36,23 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Boolean addPermissionToRole(String roleName,String permissionName) {
+    public Boolean addPermissionToRole(Long role_id, Long permission_id) {
         try {
-            Role role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException("Role not found"));
-            Permission permission = permissionRepository.findByName(permissionName).orElseThrow(() -> new RuntimeException("Permission not found"));
+            Role role = roleRepository.findById(role_id).orElseThrow(() -> new RuntimeException("Role not found"));
+            Permission permission = permissionRepository.findById(permission_id).orElseThrow(() -> new RuntimeException("Permission not found"));
             role.assignPermissionToRole(permission);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public Boolean removePermissionFromRole(Long role_id, Long permission_id) {
+        try {
+            Role role = roleRepository.findById(role_id).orElseThrow(() -> new RuntimeException("Role not found"));
+            Permission permission = permissionRepository.findById(permission_id).orElseThrow(() -> new RuntimeException("Permission not found"));
+            role.removePermissionFromRole(permission);
         }catch (Exception e){
             return false;
         }
@@ -45,9 +60,22 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> findAll() {
-        return roleRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+    public List<RoleDto> findAll() {
+        List<Role> roles = roleRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+        return roles.stream().map(role -> {
+            RoleDto roleDto = new RoleDto();
+            roleDto.setId(role.getId());
+            roleDto.setName(role.getName());
+            roleDto.setPermissions(role.getPermissions().stream().map(permission -> {
+                PermissionDto permissionDto = new PermissionDto();
+                permissionDto.setId(permission.getId());
+                permissionDto.setName(permission.getName());
+                return permissionDto;
+            }).toList());
+            return roleDto;
+        }).toList();
     }
+
 
 
 }

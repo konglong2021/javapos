@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -49,11 +50,27 @@ public class UserServiceImpl implements UserService {
         return new UserDetailsImpl(userRepository.save(user));
     }
 
-    @Transactional
-    public void addRoleToUser(Long user_id,String role_name){
-        User user = userRepository.findById(user_id).orElseThrow(() -> new RuntimeException("User not found"));
-        Role role = roleRepository.findByName(role_name).orElseThrow(() -> new RuntimeException("Role not found"));
-        user.assignRoleToUser(role);
+    public UserDto addRoleToUser(Long user_id,Long role_id) {
+        try {
+            User user = userRepository.findById(user_id).orElseThrow(() -> new RuntimeException("User not found"));
+            Role role = roleRepository.findById(role_id).orElseThrow(() -> new RuntimeException("Role not found"));
+            user.assignRoleToUser(role);
+            return userMapper.fromUserToDto(user);
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    @Override
+    public Boolean removeRoleFromUser(Long user_id, Long role_id) {
+        try {
+            User user = userRepository.findById(user_id).orElseThrow(() -> new RuntimeException("User not found"));
+            Role role = roleRepository.findById(role_id).orElseThrow(() -> new RuntimeException("Role not found"));
+            user.removeRoleFromUser(role);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override

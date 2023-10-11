@@ -7,6 +7,7 @@ import com.pos.javapos.authentication.entity.User;
 
 public interface UserService {
     UserDetailsImpl createUser(SignupDto signupDto) throws JsonProcessingException;
-    void addRoleToUser(Long user_id,String role_name);
+    UserDto addRoleToUser(Long user_id,Long role_id);
+    Boolean removeRoleFromUser(Long user_id,Long role_id);
     UserDto getUserByUsername(String username);
 }

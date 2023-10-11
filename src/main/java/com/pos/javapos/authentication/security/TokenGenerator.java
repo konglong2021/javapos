@@ -66,7 +66,6 @@ public class TokenGenerator {
         TokenDto tokenDto = new TokenDto();
         tokenDto.setUser_id(user.getId());
         tokenDto.setAccessToken(createAccessToken(authentication));
-        log.info(user.getAuthorities().toString());
         String refreshToken;
         if(authentication.getCredentials() instanceof Jwt jwt) {
             Instant now = Instant.now();

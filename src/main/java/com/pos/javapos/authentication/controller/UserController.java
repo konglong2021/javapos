@@ -1,7 +1,11 @@
 package com.pos.javapos.authentication.controller;
 
+import com.pos.javapos.authentication.dto.UserDto;
 import com.pos.javapos.authentication.dto.UserRoleDto;
 import com.pos.javapos.authentication.service.UserService;
+import com.pos.javapos.helper.ApiResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +23,13 @@ public class UserController {
     }
 
     @PostMapping("/addRoleToUser")
-    @PreAuthorize("hasAuthority('user_access')")
-    public void addRoleToUser(@RequestBody UserRoleDto userRoleDto){
+//    @PreAuthorize("hasAuthority('user_access')")
+    public ResponseEntity<?> addRoleToUser(@RequestBody UserRoleDto userRoleDto){
         try{
-            userService.addRoleToUser(userRoleDto.getUser_id(),userRoleDto.getRole_name());
+            UserDto userDto = userService.addRoleToUser(userRoleDto.getUser_id(),userRoleDto.getRole_id());
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    new ApiResponse(true, "Role has been to " + userDto.getUsername(), userDto)
+            );
         }catch (Exception e){
             throw new RuntimeException(e);
         }

@@ -1,5 +1,6 @@
 package com.pos.javapos.authentication.entity;
 
+import com.pos.javapos.shops.entity.Shop;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -31,6 +32,10 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany(mappedBy = "users",fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Set<Shop> shops = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

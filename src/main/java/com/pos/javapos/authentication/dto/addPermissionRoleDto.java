@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class addPermissionRoleDto {
-    private String roleName;
-    private String permissionName;
+    private Long role_id;
+    private Long permission_id;
 }
