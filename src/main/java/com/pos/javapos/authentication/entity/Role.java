@@ -3,8 +3,11 @@ package com.pos.javapos.authentication.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,6 +25,12 @@ public class Role {
 
     @Column(nullable = false,unique = true,length = 50)
     private String name;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Date created_at;
+    @UpdateTimestamp
+    private Date updated_at;
 
     @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     @ToString.Exclude

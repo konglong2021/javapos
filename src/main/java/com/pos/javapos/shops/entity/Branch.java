@@ -2,8 +2,11 @@ package com.pos.javapos.shops.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +27,12 @@ public class Branch {
     private String description;
     @Column(columnDefinition = "jsonb")
     private String branch_object;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Date created_at;
+    @UpdateTimestamp
+    private Date updated_at;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id",referencedColumnName = "id")

@@ -3,7 +3,10 @@ package com.pos.javapos.authentication.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -20,6 +23,12 @@ public class Permission {
     private Long id;
 
     private String name;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Date created_at;
+    @UpdateTimestamp
+    private Date updated_at;
 
     @Override
     public boolean equals(Object o) {

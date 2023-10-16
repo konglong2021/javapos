@@ -3,6 +3,8 @@ package com.pos.javapos.authentication.entity;
 import com.pos.javapos.shops.entity.Shop;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,6 +28,12 @@ public class User {
     private String password;
     @Column(columnDefinition = "jsonb")
     private String user_object;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Date created_at;
+    @UpdateTimestamp
+    private Date updated_at;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",

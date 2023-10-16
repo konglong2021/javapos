@@ -4,8 +4,11 @@ import com.pos.javapos.authentication.entity.Role;
 import com.pos.javapos.authentication.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -34,6 +37,12 @@ public class Shop {
     private String description;
     @Column(columnDefinition = "jsonb")
     private String shop_object;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Date created_at;
+    @UpdateTimestamp
+    private Date updated_at;
 
     @OneToMany(mappedBy = "shop",fetch = FetchType.LAZY)
     @ToString.Exclude
