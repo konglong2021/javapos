@@ -1,5 +1,7 @@
 package com.pos.javapos.authentication.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pos.javapos.helper.AuditableEntity;
 import com.pos.javapos.shops.entity.Shop;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,23 +19,17 @@ import java.util.*;
 @ToString
 @RequiredArgsConstructor
 @Table(name = "users")
-public class User {
+public class User extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Basic
     @Column(name = "username",unique = true, nullable = false)
     private String username;
+    @JsonIgnore
     private String password;
     @Column(columnDefinition = "jsonb")
     private String user_object;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private Date created_at;
-    @UpdateTimestamp
-    private Date updated_at;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
@@ -66,6 +62,18 @@ public class User {
     public void removeRoleFromUser(Role role){
         this.roles.remove(role);
         role.getUsers().remove(this);
+    }
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", user_object='" + user_object + '\'' +
+                ", roles=" + roles +
+                ", shops=" + shops +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedBy='" + updatedBy + '\'' +
+                '}';
     }
 
 }

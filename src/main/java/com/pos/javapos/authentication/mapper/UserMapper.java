@@ -27,7 +27,7 @@ public class UserMapper {
         return userDto;
     }
 
-    public User fromUserDto(UserDto userDto) {
+    public User fromDtoToUser(UserDto userDto) {
         User user = new User();
         BeanUtils.copyProperties(userDto, user);
         return user;

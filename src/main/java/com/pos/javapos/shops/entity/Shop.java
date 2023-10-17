@@ -2,7 +2,9 @@ package com.pos.javapos.shops.entity;
 
 import com.pos.javapos.authentication.entity.Role;
 import com.pos.javapos.authentication.entity.User;
+import com.pos.javapos.helper.AuditableEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -19,17 +21,18 @@ import java.util.Set;
 @ToString
 @RequiredArgsConstructor
 @Table(name = "shop")
-public class Shop {
+public class Shop extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false,length = 100)
     private String name;
-    @Column(nullable = true,length = 100)
+    @Column(nullable = false,length = 100)
     private String address;
-    @Column(nullable = true,length = 100)
+    @Column(nullable = false,length = 100)
     private String contact;
-    @Column(nullable = true,length = 100)
+    @Email(message = "Invalid email")
     private String email;
     private String owner;
 
@@ -37,12 +40,6 @@ public class Shop {
     private String description;
     @Column(columnDefinition = "jsonb")
     private String shop_object;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private Date created_at;
-    @UpdateTimestamp
-    private Date updated_at;
 
     @OneToMany(mappedBy = "shop",fetch = FetchType.LAZY)
     @ToString.Exclude

@@ -3,7 +3,7 @@ package com.pos.javapos.authentication.dto;
 import com.pos.javapos.authentication.entity.Role;
 import lombok.Data;
 
-import java.lang.annotation.Documented;
+
 import java.util.List;
 
 @Data

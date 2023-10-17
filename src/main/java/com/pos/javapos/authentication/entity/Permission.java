@@ -1,6 +1,7 @@
 package com.pos.javapos.authentication.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pos.javapos.helper.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,19 +17,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "permissions")
-public class Permission {
+public class Permission extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private Date created_at;
-    @UpdateTimestamp
-    private Date updated_at;
 
     @Override
     public boolean equals(Object o) {

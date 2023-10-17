@@ -11,9 +11,9 @@ public interface ShopService {
     Shop addShop(ShopDto shopDto) throws JsonProcessingException;
     Shop updateShop(ShopDto shopDto) throws JsonProcessingException;
 
-    List<Shop> getShopsByUserId(Long userId);
+    List<ShopDto> getShopsByUserId(Long userId);
 
-    Shop getShopById(Long shopId);
+    ShopDto getShopById(Long shopId) throws JsonProcessingException;
 
     Boolean existedShop(Long shopId);
 }

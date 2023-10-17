@@ -1,6 +1,7 @@
 package com.pos.javapos.authentication.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pos.javapos.helper.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,7 +19,7 @@ import java.util.Set;
 @ToString
 @RequiredArgsConstructor
 @Table(name = "roles")
-public class Role {
+public class Role extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,15 +27,21 @@ public class Role {
     @Column(nullable = false,unique = true,length = 50)
     private String name;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private Date created_at;
-    @UpdateTimestamp
-    private Date updated_at;
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles",fetch = FetchType.LAZY)
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", permissions=" + permissions +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedBy='" + updatedBy + '\'' +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {
