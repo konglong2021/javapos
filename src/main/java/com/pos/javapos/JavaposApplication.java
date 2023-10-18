@@ -18,4 +18,6 @@ public class JavaposApplication {
         return new BCryptPasswordEncoder();
     }
 
+
+
 }

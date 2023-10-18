@@ -7,15 +7,18 @@ import com.pos.javapos.authentication.entity.User;
 import com.pos.javapos.authentication.mapper.UserMapper;
 import com.pos.javapos.authentication.repository.UserRepository;
 import com.pos.javapos.shops.dto.ShopDto;
+import com.pos.javapos.shops.dto.ShopRequestDto;
 import com.pos.javapos.shops.entity.Shop;
 import com.pos.javapos.shops.mapper.ShopMapper;
 import com.pos.javapos.shops.repository.ShopRepository;
 import com.pos.javapos.shops.service.ShopService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ShopServiceImpl implements ShopService {
 
     private final UserRepository userRepository;
@@ -33,16 +36,16 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop addShop(ShopDto shopDto) throws JsonProcessingException {
-        Shop shop = shopMapper.fromShopDto(shopDto);
-        shop.setShop_object(objectMapper.writeValueAsString(shopDto.getShop_object()));
+    public Shop addShop(ShopRequestDto shopRequestDto) throws JsonProcessingException {
+        Shop shop = shopMapper.fromShopRequestDto(shopRequestDto);
+        shop.setShop_object(objectMapper.writeValueAsString(shopRequestDto.getShop_object()));
         return shopRepository.save(shop);
     }
 
     @Override
-        public Shop updateShop(ShopDto shopDto) throws JsonProcessingException {
-        Shop shop = shopMapper.fromShopDto(shopDto);
-        shop.setShop_object(objectMapper.writeValueAsString(shopDto.getShop_object()));
+        public Shop updateShop(ShopRequestDto shopRequestDto) throws JsonProcessingException {
+        Shop shop = shopMapper.fromShopRequestDto(shopRequestDto);
+        shop.setShop_object(objectMapper.writeValueAsString(shopRequestDto.getShop_object()));
         return shopRepository.save(shop);
     }
 
@@ -68,19 +71,34 @@ public class ShopServiceImpl implements ShopService {
 
     private ShopDto getShopDto(Shop shop) throws JsonProcessingException {
         ShopDto shopDto = shopMapper.fromShopToDto(shop);
-        User creator = userRepository.findById(Long.parseLong(shop.getCreatedBy())).orElseThrow();
+        User creator = userRepository.findById(Long.parseLong(shop.getCreatedBy())).orElse(null);
         if (shop.getOwner() != null){
             User owner = userRepository.findById(Long.parseLong(shop.getOwner())).orElse(null);
             shopDto.setOwner(userMapper.fromUserToDto(owner));
         }
-        UserDto userDto = userMapper.fromUserToDto(creator);
-        shopDto.setCreatedBy(userDto);
+        if (creator != null){
+            UserDto userDto = userMapper.fromUserToDto(creator);
+            shopDto.setCreatedBy(userDto);
+        }
+
         return shopDto;
     }
 
     @Override
     public Boolean existedShop(Long shopId) {
         return shopRepository.existsById(shopId);
+    }
+
+    @Override
+    public Boolean assignShopToUser(Long userId, Long shopId) {
+        Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new RuntimeException("Shop not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        try {
+            shop.assignUserToShop(user);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
 

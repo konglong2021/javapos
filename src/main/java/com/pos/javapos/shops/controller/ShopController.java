@@ -3,6 +3,7 @@ package com.pos.javapos.shops.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pos.javapos.helper.ApiResponse;
 import com.pos.javapos.shops.dto.ShopDto;
+import com.pos.javapos.shops.dto.ShopRequestDto;
 import com.pos.javapos.shops.service.ShopService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -28,18 +29,18 @@ public class ShopController {
     }
 
     @PostMapping()
-    public ResponseEntity<ApiResponse> addShop(@Valid @RequestBody ShopDto shopDto) throws JsonProcessingException {
+    public ResponseEntity<ApiResponse> addShop(@Valid @RequestBody ShopRequestDto shopRequestDto) throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            new ApiResponse(true, "Shop added successfully", shopService.addShop(shopDto))
+            new ApiResponse(true, "Shop added successfully", shopService.addShop(shopRequestDto))
         );
     }
 
     @PutMapping("/{shopId}")
-    public ResponseEntity<?> updateShop(@PathVariable Long shopId, @RequestBody ShopDto shopDto) throws JsonProcessingException {
+    public ResponseEntity<?> updateShop(@PathVariable Long shopId, @RequestBody ShopRequestDto shopRequestDto) throws JsonProcessingException {
         boolean existedShop = shopService.existedShop(shopId);
         if (existedShop){
             return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse(true, "Shop updated successfully", shopService.updateShop(shopDto))
+                new ApiResponse(true, "Shop updated successfully", shopService.updateShop(shopRequestDto))
             );
         }else{
             return ResponseEntity.status(HttpStatus.OK).body(

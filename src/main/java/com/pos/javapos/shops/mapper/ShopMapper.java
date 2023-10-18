@@ -3,6 +3,7 @@ package com.pos.javapos.shops.mapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pos.javapos.shops.dto.ShopDto;
+import com.pos.javapos.shops.dto.ShopRequestDto;
 import com.pos.javapos.shops.entity.Shop;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,11 @@ public class ShopMapper {
         Map<String, Object> shopObject = objectMapper.readValue(shop.getShop_object(),Map.class);
         shopDto.setShop_object(shopObject);
         return shopDto;
+    }
+
+    public Shop fromShopRequestDto(ShopRequestDto shopRequestDto) {
+        Shop shop = new Shop();
+        BeanUtils.copyProperties(shopRequestDto, shop);
+        return shop;
     }
 }

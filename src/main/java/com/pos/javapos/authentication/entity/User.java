@@ -37,7 +37,7 @@ public class User extends AuditableEntity {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(mappedBy = "users",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "users",fetch = FetchType.EAGER)
     @ToString.Exclude
     private Set<Shop> shops = new HashSet<>();
 

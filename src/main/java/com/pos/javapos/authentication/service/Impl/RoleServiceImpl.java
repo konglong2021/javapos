@@ -40,6 +40,9 @@ public class RoleServiceImpl implements RoleService {
         try {
             Role role = roleRepository.findById(role_id).orElseThrow(() -> new RuntimeException("Role not found"));
             Permission permission = permissionRepository.findById(permission_id).orElseThrow(() -> new RuntimeException("Permission not found"));
+            if (role.hasPermission(permission)) {
+                return false;
+            }
             role.assignPermissionToRole(permission);
         } catch (Exception e) {
             return false;

@@ -58,8 +58,8 @@ public class Role extends AuditableEntity {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "permission_role",
-            joinColumns = {@JoinColumn(name = "permission_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "permission_id", referencedColumnName = "id")})
     private Set<Permission> permissions = new HashSet<>();
 
         public void assignPermissionToRole(Permission permission){
@@ -74,5 +74,8 @@ public class Role extends AuditableEntity {
         permission.getRoles().remove(this);
     }
 
+    public boolean hasPermission(Permission permission){
+        return this.getPermissions().contains(permission);
+    }
 
 }

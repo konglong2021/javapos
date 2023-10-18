@@ -52,6 +52,24 @@ public class Shop extends AuditableEntity {
     private Set<User> users = new HashSet<>();
 
     @Override
+    public String toString() {
+        return "Shop{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", contact='" + contact + '\'' +
+                ", email='" + email + '\'' +
+                ", owner='" + owner + '\'' +
+                ", logo='" + logo + '\'' +
+                ", description='" + description + '\'' +
+                ", shop_object='" + shop_object + '\'' +
+                ", branchs=" + branchs +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedBy='" + updatedBy + '\'' +
+                '}';
+    }
+
+    @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
