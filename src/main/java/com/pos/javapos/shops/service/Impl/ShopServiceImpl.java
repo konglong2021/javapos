@@ -13,9 +13,13 @@ import com.pos.javapos.shops.mapper.ShopMapper;
 import com.pos.javapos.shops.repository.ShopRepository;
 import com.pos.javapos.shops.service.ShopService;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -99,6 +103,14 @@ public class ShopServiceImpl implements ShopService {
         }catch (Exception e){
             return false;
         }
+    }
+
+    @Override
+    public Page<UserDto> fetchUsersByShopId(Long shopId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page,size);
+        Page<User> users = userRepository.getUsersByShopId(shopId,pageRequest);
+
+        return new PageImpl<>(users.getContent().stream().map(userMapper::fromUserToDto).collect(Collectors.toList()),pageRequest,users.getTotalElements());
     }
 
 

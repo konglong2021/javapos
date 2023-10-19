@@ -8,10 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 public class UserDetailsImpl implements UserDetails {
@@ -24,8 +21,10 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = user.getRoles();
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
         roles.forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
             role.getPermissions().forEach(permission -> {
                 authorities.add(new SimpleGrantedAuthority(permission.getName()));
             });
@@ -33,6 +32,7 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
 
     }
+
 
     @Override
     public String getPassword() {

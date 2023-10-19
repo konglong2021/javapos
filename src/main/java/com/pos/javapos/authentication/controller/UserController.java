@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/addRoleToUser")
-//    @PreAuthorize("hasAuthority('user_access')")
+    @PreAuthorize("hasAuthority('user_access')")
     public ResponseEntity<?> addRoleToUser(@RequestBody UserRoleDto userRoleDto){
         try{
             UserDto userDto = userService.addRoleToUser(userRoleDto.getUser_id(),userRoleDto.getRole_id());

@@ -49,6 +49,5 @@ public class UserManager implements UserDetailsManager {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new UserDetailsImpl(user);
-//        return employee.map(customUserDetail::new).orElseThrow(() -> new UsernameNotFoundException("invalid username: "+ username));
     }
 }
