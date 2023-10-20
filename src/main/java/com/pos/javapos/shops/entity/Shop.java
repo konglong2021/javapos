@@ -18,7 +18,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @Table(name = "shop")
 public class Shop extends AuditableEntity {

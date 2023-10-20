@@ -16,7 +16,6 @@ import java.util.*;
 @Entity
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @Table(name = "users")
 public class User extends AuditableEntity {
