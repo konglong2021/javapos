@@ -16,7 +16,6 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
-@ToString
 @RequiredArgsConstructor
 @Table(name = "roles")
 public class Role extends AuditableEntity {
