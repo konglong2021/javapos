@@ -8,11 +8,13 @@ import com.pos.javapos.authentication.mapper.UserMapper;
 import com.pos.javapos.authentication.repository.UserRepository;
 import com.pos.javapos.shops.dto.ShopDto;
 import com.pos.javapos.shops.dto.ShopRequestDto;
+import com.pos.javapos.shops.dto.ShopResponseDto;
 import com.pos.javapos.shops.entity.Shop;
 import com.pos.javapos.shops.mapper.ShopMapper;
 import com.pos.javapos.shops.repository.ShopRepository;
 import com.pos.javapos.shops.service.ShopService;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -40,17 +42,20 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop addShop(ShopRequestDto shopRequestDto) throws JsonProcessingException {
+    public ShopResponseDto addShop(ShopRequestDto shopRequestDto) throws JsonProcessingException {
         Shop shop = shopMapper.fromShopRequestDto(shopRequestDto);
         shop.setShop_object(objectMapper.writeValueAsString(shopRequestDto.getShop_object()));
-        return shopRepository.save(shop);
+        shop = shopRepository.save(shop);
+        return shopMapper.fromShopToResponseDto(shop);
     }
 
     @Override
-        public Shop updateShop(ShopRequestDto shopRequestDto) throws JsonProcessingException {
-        Shop shop = shopMapper.fromShopRequestDto(shopRequestDto);
+        public ShopResponseDto updateShop(ShopRequestDto shopRequestDto) throws JsonProcessingException {
+        Shop shop = shopRepository.findById(shopRequestDto.getId()).orElseThrow(() -> new RuntimeException("Shop not found"));
+        BeanUtils.copyProperties(shopRequestDto, shop);
         shop.setShop_object(objectMapper.writeValueAsString(shopRequestDto.getShop_object()));
-        return shopRepository.save(shop);
+        shop = shopRepository.save(shop);
+        return shopMapper.fromShopToResponseDto(shop);
     }
 
     @Override

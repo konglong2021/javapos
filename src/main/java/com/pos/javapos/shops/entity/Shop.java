@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -51,23 +53,23 @@ public class Shop extends AuditableEntity {
             inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")})
     private Set<User> users = new HashSet<>();
 
-    @Override
-    public String toString() {
-        return "Shop{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", contact='" + contact + '\'' +
-                ", email='" + email + '\'' +
-                ", owner='" + owner + '\'' +
-                ", logo='" + logo + '\'' +
-                ", description='" + description + '\'' +
-                ", shop_object='" + shop_object + '\'' +
-                ", branchs=" + branchs +
-                ", createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Shop{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", address='" + address + '\'' +
+//                ", contact='" + contact + '\'' +
+//                ", email='" + email + '\'' +
+//                ", owner='" + owner + '\'' +
+//                ", logo='" + logo + '\'' +
+//                ", description='" + description + '\'' +
+//                ", shop_object='" + shop_object + '\'' +
+//                ", branchs=" + branchs +
+//                ", createdBy='" + createdBy + '\'' +
+//                ", updatedBy='" + updatedBy + '\'' +
+//                '}';
+//    }
 
     @Override
     public final boolean equals(Object o) {

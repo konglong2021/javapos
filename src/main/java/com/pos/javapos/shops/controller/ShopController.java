@@ -48,6 +48,7 @@ public class ShopController {
     public ResponseEntity<?> updateShop(@PathVariable Long shopId, @RequestBody ShopRequestDto shopRequestDto) throws JsonProcessingException {
         boolean existedShop = shopService.existedShop(shopId);
         if (existedShop){
+            shopRequestDto.setId(shopId);
             return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse(true, "Shop updated successfully", shopService.updateShop(shopRequestDto))
             );
