@@ -48,6 +48,10 @@ public class UserDetailsImpl implements UserDetails {
         return user.getId().toString();
     }
 
+    public Role getRole(){
+        return user.getRoles().iterator().next();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

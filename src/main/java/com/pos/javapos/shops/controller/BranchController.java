@@ -28,4 +28,20 @@ public class BranchController {
             new ApiResponse(true, "Branch fetched successfully", branchService.getBranchesByShopId(shopId))
         );
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse> updateBranch(@PathVariable Long id, @RequestBody BranchDto branchDto) throws JsonProcessingException {
+        branchDto.setId(id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse(true, "Branch updated successfully", branchService.updateBranch(branchDto))
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse> deleteBranch(@PathVariable Long id) {
+        branchService.deleteBranch(id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse(true, "Branch deleted successfully", null)
+        );
+    }
 }

@@ -10,5 +10,7 @@ public interface BranchService {
     List<BranchDto> getBranchesByShopId(Long shopId);
 
     BranchResponseDto addBranch(BranchDto branchDto) throws JsonProcessingException;
+    BranchResponseDto updateBranch(BranchDto branchDto) throws JsonProcessingException;
+    Void deleteBranch(Long id);
 
 }

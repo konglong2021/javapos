@@ -10,6 +10,7 @@ import com.pos.javapos.shops.repository.BranchRepository;
 import com.pos.javapos.shops.repository.ShopRepository;
 import com.pos.javapos.shops.service.BranchService;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class BranchServiceIml implements BranchService {
                 throw new RuntimeException(e);
             }
         }).toList();
+
     }
 
     @Override
@@ -44,6 +46,31 @@ public class BranchServiceIml implements BranchService {
         branch.setShop(shop);
         branchRepository.save(branch);
         return branchMapper.fromBranchToResponseDto(branch);
+    }
+
+    @Override
+    public BranchResponseDto updateBranch(BranchDto branchDto) throws JsonProcessingException {
+        try {
+            Branch branch = branchRepository.findById(branchDto.getId()).orElseThrow(() -> new RuntimeException("Branch not found"));
+            Shop shop = shopRepository.findById(branchDto.getShop_id()).orElseThrow(() -> new RuntimeException("Shop not found"));
+            BeanUtils.copyProperties(branchDto, branch);
+            branch.setShop(shop);
+            branchRepository.save(branch);
+            return branchMapper.fromBranchToResponseDto(branch);
+        }catch (Exception e){
+            throw new RuntimeException("Branch update failed");
+        }
+
+    }
+
+    @Override
+    public Void deleteBranch(Long id) {
+        try {
+            branchRepository.deleteById(id);
+        }catch (Exception e){
+            throw new RuntimeException("Branch delete failed");
+        }
+        return null;
     }
 
 

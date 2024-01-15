@@ -11,4 +11,5 @@ public interface RoleService {
     Boolean addPermissionToRole(Long role_id,Long permission_id);
     Boolean removePermissionFromRole(Long role_id,Long permission_id);
     List<RoleDto> findAll();
+
 }

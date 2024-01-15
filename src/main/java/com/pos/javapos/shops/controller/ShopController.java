@@ -60,6 +60,7 @@ public class ShopController {
     }
 
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasAuthority('user_access')")
     public ResponseEntity<ApiResponse> getShopByUserId(@PathVariable Long userId){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse(true,"Fetched all shop by user id",shopService.getShopsByUserId(userId))

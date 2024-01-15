@@ -1,6 +1,9 @@
 package com.pos.javapos.authentication.security;
 
+import com.pos.javapos.authentication.dto.RoleDto;
 import com.pos.javapos.authentication.dto.TokenDto;
+import com.pos.javapos.authentication.entity.Role;
+import com.pos.javapos.authentication.service.RoleService;
 import com.pos.javapos.authentication.service.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +21,15 @@ import java.text.MessageFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Component
 @Slf4j
 public class TokenGenerator {
     @Autowired
     JwtEncoder accessTokenEncoder;
+    @Autowired
+    RoleService roleService;
 
     @Autowired
     @Qualifier("jwtRefreshTokenEncoder")
@@ -65,6 +71,7 @@ public class TokenGenerator {
         }
         TokenDto tokenDto = new TokenDto();
         tokenDto.setUser_id(user.getId());
+        tokenDto.setRole(user.getRole());
         tokenDto.setAccessToken(createAccessToken(authentication));
         String refreshToken;
         if(authentication.getCredentials() instanceof Jwt jwt) {
