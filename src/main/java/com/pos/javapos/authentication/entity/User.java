@@ -2,6 +2,7 @@ package com.pos.javapos.authentication.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pos.javapos.helper.AuditableEntity;
+import com.pos.javapos.shops.entity.Branch;
 import com.pos.javapos.shops.entity.Shop;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,9 +37,16 @@ public class User extends AuditableEntity {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(mappedBy = "users",fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "shop_id",referencedColumnName = "id")
     @ToString.Exclude
-    private Set<Shop> shops = new HashSet<>();
+    private Shop shops;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id",referencedColumnName = "id")
+    @ToString.Exclude
+    private Branch branches;
 
     @Override
     public boolean equals(Object o) {
@@ -69,7 +77,6 @@ public class User extends AuditableEntity {
                 ", username='" + username + '\'' +
                 ", user_object='" + user_object + '\'' +
                 ", roles=" + roles +
-                ", shops=" + shops +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
                 '}';

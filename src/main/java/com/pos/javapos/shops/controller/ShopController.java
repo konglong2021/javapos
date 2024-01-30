@@ -76,13 +76,13 @@ public class ShopController {
 
     }
 
-    @GetMapping("/assign-shop-to-user/{userId}/{shopId}")
-    @PreAuthorize("hasAnyRole('ROLE_Admin','ROLE_User')")
-    public ResponseEntity<ApiResponse> assignShopToUser(@PathVariable Long userId, @PathVariable Long shopId){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse(true,"Shop assigned successfully",shopService.assignShopToUser(userId,shopId))
-        );
-    }
+//    @GetMapping("/assign-shop-to-user/{userId}/{shopId}")
+//    @PreAuthorize("hasAnyRole('ROLE_Admin','ROLE_User')")
+//    public ResponseEntity<ApiResponse> assignShopToUser(@PathVariable Long userId, @PathVariable Long shopId){
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ApiResponse(true,"Shop assigned successfully",shopService.assignShopToUser(userId,shopId))
+//        );
+//    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)

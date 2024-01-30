@@ -5,13 +5,15 @@ import com.pos.javapos.authentication.dto.SignupDto;
 import com.pos.javapos.authentication.service.PermissionService;
 import com.pos.javapos.authentication.service.RoleService;
 import com.pos.javapos.authentication.service.UserService;
-import com.pos.javapos.shops.dto.ShopDto;
+import com.pos.javapos.shops.dto.BranchDto;
 import com.pos.javapos.shops.dto.ShopRequestDto;
+import com.pos.javapos.shops.service.BranchService;
 import com.pos.javapos.shops.service.ShopService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Random;
 
 @Component
@@ -20,12 +22,14 @@ public class DataSeeder implements CommandLineRunner {
     private final RoleService roleService;
     private final PermissionService permissionService;
     private final ShopService shopService;
+    private final BranchService branchService;
 
-    public DataSeeder(UserService userService, RoleService roleService, PermissionService permissionService, ShopService shopService) {
+    public DataSeeder(UserService userService, RoleService roleService, PermissionService permissionService, ShopService shopService, BranchService branchService) {
         this.userService = userService;
         this.roleService = roleService;
         this.permissionService = permissionService;
         this.shopService = shopService;
+        this.branchService = branchService;
     }
 
     @Override
@@ -34,6 +38,7 @@ public class DataSeeder implements CommandLineRunner {
         createRole();
         createUser();
         createShop();
+        createBranch();
     }
 
     private void createShop() throws JsonProcessingException {
@@ -45,7 +50,7 @@ public class DataSeeder implements CommandLineRunner {
             shopRequestDto.setContact("0965066555");
             shopRequestDto.setOwner("1");
             shopService.addShop(shopRequestDto);
-            shopService.assignShopToUser(1L,(long) i+1);
+//            shopService.assignShopToUser(1L,(long) i+1);
         }
     }
 
@@ -70,6 +75,22 @@ public class DataSeeder implements CommandLineRunner {
             userService.createUser(signupDto);
             Random random = new Random();
             userService.addRoleToUser((long) i, random.nextLong(4));
+        }
+    }
+
+    private void createBranch() throws JsonProcessingException {
+
+        for (int i = 0; i < 10; i++) {
+            BranchDto branchDto = new BranchDto();
+            branchDto.setName("Branch "+i);
+            branchDto.setAddress("Phnom penh" + i);
+            branchDto.setContact("0965066555");
+            branchDto.setEmail("branch"+i+"@branch.com");
+            branchDto.setLogo("logo");
+            branchDto.setDescription("description");
+            branchDto.setShop_id((long) i+1);
+
+            branchService.addBranch(branchDto);
         }
     }
 

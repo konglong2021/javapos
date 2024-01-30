@@ -20,7 +20,7 @@ public interface ShopService {
 
     Boolean existedShop(Long shopId);
 
-    Boolean assignShopToUser(Long userId, Long shopId);
+//    Boolean assignShopToUser(Long userId, Long shopId);
 
     Page<UserDto> fetchUsersByShopId(Long shopId, int page,int size);
 }
