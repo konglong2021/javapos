@@ -6,11 +6,7 @@ import com.pos.javapos.shops.entity.Branch;
 import com.pos.javapos.shops.entity.Shop;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.proxy.HibernateProxy;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 
 import java.util.*;
 
@@ -80,6 +76,14 @@ public class User extends AuditableEntity {
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
                 '}';
+    }
+
+    public Shop getShop(){
+        return this.shops;
+    }
+
+    public Branch getBranch(){
+        return this.branches;
     }
 
 }

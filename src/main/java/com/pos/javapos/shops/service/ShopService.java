@@ -5,6 +5,7 @@ import com.pos.javapos.authentication.dto.UserDto;
 import com.pos.javapos.shops.dto.ShopDto;
 import com.pos.javapos.shops.dto.ShopRequestDto;
 import com.pos.javapos.shops.dto.ShopResponseDto;
+import com.pos.javapos.shops.entity.Shop;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -23,4 +24,5 @@ public interface ShopService {
 //    Boolean assignShopToUser(Long userId, Long shopId);
 
     Page<UserDto> fetchUsersByShopId(Long shopId, int page,int size);
+
 }

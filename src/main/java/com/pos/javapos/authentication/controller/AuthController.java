@@ -43,7 +43,6 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody SignupDto signupDto) throws JsonProcessingException {
         UserDetailsImpl user = userService.createUser(signupDto);
-
         Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(user,signupDto.getPassword(), Collections.emptyList());
         return ResponseEntity.ok(tokenGenerator.createToken(authentication));
     }
@@ -53,7 +52,6 @@ public class AuthController {
      Authentication authentication = daoAuthenticationProvider.authenticate(
              UsernamePasswordAuthenticationToken.unauthenticated(loginDto.getUsername(), loginDto.getPassword())
      );
-
      return ResponseEntity.ok(tokenGenerator.createToken(authentication));
     }
 

@@ -4,11 +4,9 @@ import com.pos.javapos.authentication.entity.User;
 import com.pos.javapos.helper.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.Date;
+
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;

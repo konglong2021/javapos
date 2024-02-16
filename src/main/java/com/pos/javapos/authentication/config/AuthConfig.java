@@ -30,8 +30,6 @@ import org.springframework.security.oauth2.server.resource.web.access.BearerToke
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-
-
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Slf4j
@@ -58,9 +56,9 @@ public class AuthConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
-                .oauth2ResourceServer((oauth2) ->
-                        oauth2.jwt((jwt) -> jwt.jwtAuthenticationConverter(jwtToUserConverter)))
-                .exceptionHandling((exceptions) -> exceptions
+                .oauth2ResourceServer(oauth2 ->
+                        oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtToUserConverter)))
+                .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
                         .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
                 )

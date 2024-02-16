@@ -3,6 +3,8 @@ package com.pos.javapos.authentication.service;
 import com.pos.javapos.authentication.entity.Permission;
 import com.pos.javapos.authentication.entity.Role;
 import com.pos.javapos.authentication.entity.User;
+import com.pos.javapos.shops.entity.Branch;
+import com.pos.javapos.shops.entity.Shop;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,9 +27,7 @@ public class UserDetailsImpl implements UserDetails {
 
         roles.forEach(role -> {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-            role.getPermissions().forEach(permission -> {
-                authorities.add(new SimpleGrantedAuthority(permission.getName()));
-            });
+            role.getPermissions().forEach(permission -> authorities.add(new SimpleGrantedAuthority(permission.getName())));
         });
         return authorities;
 
@@ -51,6 +51,9 @@ public class UserDetailsImpl implements UserDetails {
     public Role getRole(){
         return user.getRoles().iterator().next();
     }
+
+    public Shop getShop(){return user.getShop();}
+    public Branch getBranch(){return user.getBranches();}
 
     @Override
     public boolean isAccountNonExpired() {

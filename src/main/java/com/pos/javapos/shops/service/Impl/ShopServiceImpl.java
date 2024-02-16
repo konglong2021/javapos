@@ -98,25 +98,11 @@ public class ShopServiceImpl implements ShopService {
         return shopRepository.existsById(shopId);
     }
 
-//    @Override
-//    public Boolean assignShopToUser(Long userId, Long shopId) {
-//        Shop shop = shopRepository.findById(shopId).orElseThrow(() -> new RuntimeException("Shop not found"));
-//        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-//        try {
-//            shop.assignUserToShop(user);
-//            return true;
-//        }catch (Exception e){
-//            return false;
-//        }
-//    }
-
     @Override
     public Page<UserDto> fetchUsersByShopId(Long shopId, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page,size);
         Page<User> users = userRepository.getUsersByShopId(shopId,pageRequest);
-
         return new PageImpl<>(users.getContent().stream().map(userMapper::fromUserToDto).collect(Collectors.toList()),pageRequest,users.getTotalElements());
     }
-
 
 }

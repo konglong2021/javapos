@@ -40,6 +40,10 @@ public class KeyUtils {
     @Value("${refresh-token.public}")
     private String refreshTokenPublicKeyPath;
 
+    @Value("${KEY_PATH}")
+    private String keyPath;
+
+
     private KeyPair _accessTokenKeyPair;
     private KeyPair _refreshTokenKeyPair;
 
@@ -80,13 +84,13 @@ public class KeyUtils {
                 throw new RuntimeException(e);
             }
         }else {
-            if(Arrays.stream(environment.getActiveProfiles()).anyMatch(s -> s.equals("prod"))){
+            if(Arrays.stream(environment.getActiveProfiles()).anyMatch(s -> s.equals("prod1"))){
                 throw new RuntimeException("Public and private key not found");
             }
         }
 
         // create key pair
-        File directory = new File("access-refresh-token-keys");
+        File directory = new File(keyPath);
         if (!directory.exists()){
             directory.mkdirs();
         }

@@ -3,17 +3,14 @@ package com.pos.javapos.shops.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pos.javapos.authentication.dto.UserDto;
 import com.pos.javapos.helper.ApiResponse;
-import com.pos.javapos.shops.dto.ShopDto;
 import com.pos.javapos.shops.dto.ShopRequestDto;
 import com.pos.javapos.shops.service.ShopService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 

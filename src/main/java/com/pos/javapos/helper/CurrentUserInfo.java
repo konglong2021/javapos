@@ -1,5 +1,6 @@
 package com.pos.javapos.helper;
 
+import com.pos.javapos.authentication.dto.CurrentUserDto;
 import com.pos.javapos.authentication.service.UserDetailsImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,5 +29,20 @@ public class CurrentUserInfo {
                    .anyMatch(authority -> authority.getAuthority().equals(permission));
        }
        return false;
+   }
+
+   public CurrentUserDto getCurrentUser(){
+       Authentication authentication = init();
+       if (authentication != null && authentication.isAuthenticated()) {
+           UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+           CurrentUserDto currentUser = new CurrentUserDto();
+           currentUser.setId(Long.parseLong(user.getId()));
+           currentUser.setUsername(user.getUsername());
+           currentUser.setRoles(user.getAuthorities());
+           currentUser.setShop(user.getShop());
+           currentUser.setBranch(user.getBranch());
+           return currentUser;
+       }
+       return null;
    }
 }

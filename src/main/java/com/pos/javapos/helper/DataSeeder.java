@@ -1,10 +1,14 @@
 package com.pos.javapos.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.javafaker.Faker;
 import com.pos.javapos.authentication.dto.SignupDto;
 import com.pos.javapos.authentication.service.PermissionService;
 import com.pos.javapos.authentication.service.RoleService;
 import com.pos.javapos.authentication.service.UserService;
+import com.pos.javapos.products.dto.ProductDto;
+import com.pos.javapos.products.entity.Product;
+import com.pos.javapos.products.service.ProductService;
 import com.pos.javapos.shops.dto.BranchDto;
 import com.pos.javapos.shops.dto.ShopRequestDto;
 import com.pos.javapos.shops.service.BranchService;
@@ -13,7 +17,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Random;
 
 @Component
@@ -23,13 +26,15 @@ public class DataSeeder implements CommandLineRunner {
     private final PermissionService permissionService;
     private final ShopService shopService;
     private final BranchService branchService;
+    private final ProductService productService;
 
-    public DataSeeder(UserService userService, RoleService roleService, PermissionService permissionService, ShopService shopService, BranchService branchService) {
+    public DataSeeder(UserService userService, RoleService roleService, PermissionService permissionService, ShopService shopService, BranchService branchService, ProductService productService) {
         this.userService = userService;
         this.roleService = roleService;
         this.permissionService = permissionService;
         this.shopService = shopService;
         this.branchService = branchService;
+        this.productService = productService;
     }
 
     @Override
@@ -39,6 +44,21 @@ public class DataSeeder implements CommandLineRunner {
         createUser();
         createShop();
         createBranch();
+        createProduct();
+    }
+
+    private void createProduct() throws JsonProcessingException {
+        Faker faker = new Faker();
+        Random random = new Random();
+        for (int i = 0; i < 1000; i++) {
+            ProductDto product = new ProductDto();
+            product.setType(faker.commerce().material());
+            product.setImage(faker.internet().url());
+            product.setProductName(faker.commerce().productName() + i);
+            product.setDescription(faker.commerce().material());
+            product.setPrice(random.nextDouble(1000));
+            productService.create(product);
+        }
     }
 
     private void createShop() throws JsonProcessingException {
