@@ -31,4 +31,19 @@ public class ProductController {
                 new ApiResponse(true,"Created Product",productService.create(productDto))
         );
     }
+
+    @PutMapping("/{shopId}")
+    public ResponseEntity<?> update(@PathVariable Long shopId,
+                                    @RequestBody ProductDto productDto) throws JsonProcessingException {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse(true,"Updated Product",productService.update(shopId,productDto))
+        );
+    }
+
+    @DeleteMapping("/{shopId}")
+    public ResponseEntity<?> delete(@PathVariable Long shopId){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse(true,"Deleted Product",productService.delete(shopId))
+        );
+    }
 }

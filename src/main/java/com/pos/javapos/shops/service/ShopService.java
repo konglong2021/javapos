@@ -7,8 +7,10 @@ import com.pos.javapos.shops.dto.ShopRequestDto;
 import com.pos.javapos.shops.dto.ShopResponseDto;
 import com.pos.javapos.shops.entity.Shop;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 public interface ShopService {
 

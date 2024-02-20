@@ -6,8 +6,9 @@ import com.pos.javapos.authentication.dto.SignupDto;
 import com.pos.javapos.authentication.service.PermissionService;
 import com.pos.javapos.authentication.service.RoleService;
 import com.pos.javapos.authentication.service.UserService;
+import com.pos.javapos.products.dto.CategoryDto;
 import com.pos.javapos.products.dto.ProductDto;
-import com.pos.javapos.products.entity.Product;
+import com.pos.javapos.products.service.CategoryService;
 import com.pos.javapos.products.service.ProductService;
 import com.pos.javapos.shops.dto.BranchDto;
 import com.pos.javapos.shops.dto.ShopRequestDto;
@@ -27,14 +28,16 @@ public class DataSeeder implements CommandLineRunner {
     private final ShopService shopService;
     private final BranchService branchService;
     private final ProductService productService;
+    private final CategoryService categoryService;
 
-    public DataSeeder(UserService userService, RoleService roleService, PermissionService permissionService, ShopService shopService, BranchService branchService, ProductService productService) {
+    public DataSeeder(UserService userService, RoleService roleService, PermissionService permissionService, ShopService shopService, BranchService branchService, ProductService productService, CategoryService categoryService) {
         this.userService = userService;
         this.roleService = roleService;
         this.permissionService = permissionService;
         this.shopService = shopService;
         this.branchService = branchService;
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -44,7 +47,9 @@ public class DataSeeder implements CommandLineRunner {
         createUser();
         createShop();
         createBranch();
+        createCategory();
         createProduct();
+
     }
 
     private void createProduct() throws JsonProcessingException {
@@ -58,6 +63,16 @@ public class DataSeeder implements CommandLineRunner {
             product.setDescription(faker.commerce().material());
             product.setPrice(random.nextDouble(1000));
             productService.create(product);
+        }
+    }
+
+    private void createCategory() {
+        Faker faker = new Faker();
+        for (int i = 0; i< 100; i++){
+            CategoryDto category = new CategoryDto();
+            category.setName(faker.commerce().material());
+            category.setTag(faker.artist().name());
+            categoryService.create(category);
         }
     }
 
@@ -99,7 +114,6 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void createBranch() throws JsonProcessingException {
-
         for (int i = 0; i < 10; i++) {
             BranchDto branchDto = new BranchDto();
             branchDto.setName("Branch "+i);
@@ -109,7 +123,6 @@ public class DataSeeder implements CommandLineRunner {
             branchDto.setLogo("logo");
             branchDto.setDescription("description");
             branchDto.setShop_id((long) i+1);
-
             branchService.addBranch(branchDto);
         }
     }

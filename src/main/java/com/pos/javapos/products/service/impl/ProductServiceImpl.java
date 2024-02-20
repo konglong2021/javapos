@@ -53,10 +53,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto create(ProductDto productDto){
         try {
-            String existed = productRepository.existsByProductName(productDto.getProductName());
-            if (existed !=null){
-                throw new RuntimeException("Product already existed");
-            }
+            existedProduct(productDto);
             CurrentUserDto currentUser = currentUserInfo.getCurrentUser();
             String lastId = productRepository.findLastId();
             Product product = productMapper.fromDtoToProduct(productDto);
@@ -76,15 +73,27 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto update(Long id,ProductDto productDto) throws JsonProcessingException {
+        existedProduct(productDto);
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
-        BeanUtils.copyProperties(productDto, product);
         product = productMapper.fromDtoToProduct(productDto);
+        product.setId(id);
         productRepository.save(product);
         return productMapper.fromProductToDto(product);
     }
 
     @Override
-    public void delete(Long id) {
-        productRepository.deleteById(id);
+    public Boolean delete(Long id) {
+        try {
+            productRepository.deleteById(id);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+    private void existedProduct(ProductDto productDto){
+        String existed = productRepository.existsByProductName(productDto.getProductName());
+        if (existed !=null){
+            throw new RuntimeException("Product already existed");
+        }
     }
 }

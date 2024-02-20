@@ -1,10 +1,12 @@
 package com.pos.javapos.shops.dto;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Map;
 
 @Data
+@ToString
 public class BranchDto {
     private Long id;
     private String name;

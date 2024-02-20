@@ -36,7 +36,6 @@ public class BranchServiceIml implements BranchService {
                 throw new RuntimeException(e);
             }
         }).toList();
-
     }
 
     @Override

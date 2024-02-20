@@ -10,6 +10,7 @@ import com.pos.javapos.shops.dto.ShopDto;
 import com.pos.javapos.shops.dto.ShopRequestDto;
 import com.pos.javapos.shops.dto.ShopResponseDto;
 import com.pos.javapos.shops.entity.Shop;
+import com.pos.javapos.shops.mapper.BranchMapper;
 import com.pos.javapos.shops.mapper.ShopMapper;
 import com.pos.javapos.shops.repository.ShopRepository;
 import com.pos.javapos.shops.service.ShopService;
@@ -32,13 +33,15 @@ public class ShopServiceImpl implements ShopService {
     private final ShopMapper shopMapper;
     private final ObjectMapper objectMapper;
     private final UserMapper userMapper;
+    private final BranchMapper branchMapper;
 
-    public ShopServiceImpl(UserRepository userRepository, ShopRepository shopRepository, ShopMapper shopMapper, ObjectMapper objectMapper, UserMapper userMapper) {
+    public ShopServiceImpl(UserRepository userRepository, ShopRepository shopRepository, ShopMapper shopMapper, ObjectMapper objectMapper, UserMapper userMapper, BranchMapper branchMapper) {
         this.userRepository = userRepository;
         this.shopRepository = shopRepository;
         this.shopMapper = shopMapper;
         this.objectMapper = objectMapper;
         this.userMapper = userMapper;
+        this.branchMapper = branchMapper;
     }
 
     @Override
@@ -89,7 +92,13 @@ public class ShopServiceImpl implements ShopService {
             UserDto userDto = userMapper.fromUserToDto(creator);
             shopDto.setCreatedBy(userDto);
         }
-
+        shopDto.setBranch(shop.getBranches().stream().map(branch -> {
+            try {
+                return branchMapper.fromBranchToDto(branch);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toList()));
         return shopDto;
     }
 

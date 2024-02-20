@@ -13,6 +13,6 @@ public interface ProductService {
     ProductDto show(Long id);
     ProductDto create(ProductDto productDto) throws JsonProcessingException;
     ProductDto update(Long id,ProductDto productDto) throws JsonProcessingException;
-    void delete(Long id);
+    Boolean delete(Long id);
 //    Page<UserDto> fetchUsersByShopId(Long shopId, int page, int size);
 }
