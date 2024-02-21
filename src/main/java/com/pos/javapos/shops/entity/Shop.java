@@ -23,6 +23,7 @@ public class Shop extends AuditableEntity {
     private Long id;
     @Column(nullable = false,length = 100)
     private String name;
+
     @Column(nullable = false,length = 100)
     private String address;
     @Column(nullable = false,length = 100)
@@ -36,12 +37,12 @@ public class Shop extends AuditableEntity {
     @Column(columnDefinition = "jsonb")
     private String shop_object;
 
-    @OneToMany(mappedBy = "shop",fetch = FetchType.LAZY)
     @ToString.Exclude
+    @OneToMany(mappedBy = "shop",fetch = FetchType.LAZY)
     private Set<Branch> branches = new HashSet<>();
 
-    @OneToMany(mappedBy = "shops",fetch = FetchType.LAZY)
     @ToString.Exclude
+    @OneToMany(mappedBy = "shops",fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
 
 

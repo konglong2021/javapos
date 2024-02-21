@@ -34,9 +34,9 @@ public class Branch extends AuditableEntity {
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id",referencedColumnName = "id")
-    @ToString.Exclude
     private Shop shop;
 
 

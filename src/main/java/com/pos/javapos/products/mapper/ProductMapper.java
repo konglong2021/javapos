@@ -22,7 +22,6 @@ public class ProductMapper {
 
     public Product fromDtoToProduct(ProductDto productDto) throws JsonProcessingException {
         Product product = new Product();
-//        BeanUtils.copyProperties(productDto, product);
         product.setImage(productDto.getImage());
         product.setProductName(productDto.getProductName());
         product.setDescription(productDto.getDescription());
