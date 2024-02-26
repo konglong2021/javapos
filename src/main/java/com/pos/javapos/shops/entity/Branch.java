@@ -1,5 +1,6 @@
 package com.pos.javapos.shops.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.pos.javapos.authentication.entity.User;
 import com.pos.javapos.helper.AuditableEntity;
 import jakarta.persistence.*;
@@ -34,7 +35,7 @@ public class Branch extends AuditableEntity {
     @ToString.Exclude
     private Set<User> users = new HashSet<>();
 
-    @ToString.Exclude
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id",referencedColumnName = "id")
     private Shop shop;

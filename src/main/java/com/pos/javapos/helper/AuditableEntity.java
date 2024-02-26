@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -28,5 +29,8 @@ public class AuditableEntity {
     private Date createdAt;
     @UpdateTimestamp
     private Date updatedAt;
+    @Column(name = "is_delete", columnDefinition = "boolean default false")
+
+    private Boolean isDelete = false;
 
 }

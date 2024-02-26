@@ -20,6 +20,4 @@ public class UserResponseDto {
     private String shop;
     private String branch;
     private List<Role> roles;
-
-
 }

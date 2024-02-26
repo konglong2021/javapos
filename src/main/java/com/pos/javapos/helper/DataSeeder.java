@@ -42,13 +42,13 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        createPermission();
-        createRole();
-        createUser();
-        createShop();
-        createBranch();
-        createCategory();
-        createProduct();
+//        createPermission();
+//        createRole();
+//        createUser();
+//        createShop();
+//        createBranch();
+//        createCategory();
+//        createProduct();
 
     }
 
@@ -62,7 +62,8 @@ public class DataSeeder implements CommandLineRunner {
             product.setProductName(faker.commerce().productName() + i);
             product.setDescription(faker.commerce().material());
             product.setPrice(random.nextDouble(1000));
-            productService.create(product);
+            product = productService.create(product);
+            productService.assignProductToCategory(random.nextLong(1,100), product.getId());
         }
     }
 
@@ -126,5 +127,6 @@ public class DataSeeder implements CommandLineRunner {
             branchService.addBranch(branchDto);
         }
     }
+
 
 }

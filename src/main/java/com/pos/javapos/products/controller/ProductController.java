@@ -46,4 +46,22 @@ public class ProductController {
                 new ApiResponse(true,"Deleted Product",productService.delete(shopId))
         );
     }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> findProductsByCategory(@PathVariable Long categoryId,
+                                                    @RequestParam(name = "page",defaultValue = "0") int page,
+                                                    @RequestParam(name = "size",defaultValue = "10") int size){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse(true,"Fetched Products",productService.findProductsByCategory(categoryId,page,size))
+        );
+    }
+
+    @GetMapping("/branch/{branchId}")
+    public ResponseEntity<?> findProductsByBranch(@PathVariable Long branchId,
+                                                    @RequestParam(name = "page",defaultValue = "0") int page,
+                                                    @RequestParam(name = "size",defaultValue = "10") int size){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse(true,"Fetched Products",productService.findProductsByBranch(branchId,page,size))
+        );
+    }
 }

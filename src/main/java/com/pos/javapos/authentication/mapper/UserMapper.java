@@ -39,6 +39,7 @@ public class UserMapper {
 
     public UserResponseDto fromUserToResponseDto(User user){
         UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setId(user.getId());
         userResponseDto.setUsername(user.getUsername());
         userResponseDto.setRoles(user.getRoles().stream().toList());
         userResponseDto.setShop(user.getShop().getName());

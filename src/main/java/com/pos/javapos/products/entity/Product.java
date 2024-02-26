@@ -30,6 +30,7 @@ public class Product extends AuditableEntity {
     @Column(columnDefinition = "jsonb")
     private String product_object;
     private String description;
+    private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id",referencedColumnName = "id")

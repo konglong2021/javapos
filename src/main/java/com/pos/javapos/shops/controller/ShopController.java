@@ -82,15 +82,15 @@ public class ShopController {
 //        );
 //    }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String,String> handleValidationErrors(MethodArgumentNotValidException ex){
-        Map<String,String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error ->{
-            String fieldName = ((FieldError)error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName,errorMessage);
-        });
-        return errors;
-    }
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public Map<String,String> handleValidationErrors(MethodArgumentNotValidException ex){
+//        Map<String,String> errors = new HashMap<>();
+//        ex.getBindingResult().getAllErrors().forEach(error ->{
+//            String fieldName = ((FieldError)error).getField();
+//            String errorMessage = error.getDefaultMessage();
+//            errors.put(fieldName,errorMessage);
+//        });
+//        return errors;
+//    }
 }

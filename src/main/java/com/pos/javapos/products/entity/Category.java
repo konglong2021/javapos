@@ -28,4 +28,14 @@ public class Category extends AuditableEntity {
     @ManyToMany(mappedBy = "category",fetch = FetchType.LAZY)
     @ToString.Exclude
     private Set<Product> products = new HashSet<>();
+
+    public void addProduct(Product product){
+        this.products.add(product);
+        product.getCategory().add(this);
+    }
+
+    public void removeProduct(Product product){
+        this.products.remove(product);
+        product.getCategory().remove(this);
+    }
 }

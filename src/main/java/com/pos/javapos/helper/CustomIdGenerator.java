@@ -7,9 +7,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.pos.javapos.helper.Helper.PRODUCT_PREFIX;
+
 public class CustomIdGenerator {
 
-    private static String PREFIX = "P_";
+    private static String PREFIX = PRODUCT_PREFIX;
     private static AtomicLong counter;
 
     public CustomIdGenerator(String lastId,String prefix) {
@@ -23,7 +25,6 @@ public class CustomIdGenerator {
     }
 
     private Long getLastIdFromDatabase(String lastId) {
-        //String lastId = productRepository.findLastId();
         if (lastId != null) {
             String previousId = lastId.substring(PREFIX.length(),(PREFIX.length() + 8));
             if (previousId.equals(getLastDateTime())) {
