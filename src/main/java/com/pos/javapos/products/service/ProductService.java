@@ -14,9 +14,7 @@ public interface ProductService {
     ProductDto create(ProductDto productDto) throws JsonProcessingException;
     ProductDto update(Long id,ProductDto productDto) throws JsonProcessingException;
     Boolean delete(Long id);
-//    Page<UserDto> fetchUsersByShopId(Long shopId, int page, int size);
-
-    void assignProductToCategory(Long categoryId, Long productId);
+    Boolean assignProductToCategory(Long categoryId, Long productId);
 
     Page<ProductDto> findProductsByCategory(Long categoryId, int page, int size);
     Page<ProductDto> findProductsByBranch(Long branchId, int page, int size);

@@ -55,7 +55,7 @@ public class AuthController {
      return ResponseEntity.ok(tokenGenerator.createToken(authentication));
     }
 
-    @PostMapping("/token")
+    @PostMapping("/refresh")
     public ResponseEntity<?> token(@RequestBody TokenDto tokenDto){
         Authentication authentication = refreshTokenAuthProvider.authenticate(new BearerTokenAuthenticationToken(tokenDto.getRefreshToken()));
         return ResponseEntity.ok(tokenGenerator.createToken(authentication));

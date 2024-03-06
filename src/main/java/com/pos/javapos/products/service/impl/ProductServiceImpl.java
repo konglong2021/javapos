@@ -84,7 +84,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto update(Long id,ProductDto productDto) throws JsonProcessingException {
-        existedProduct(productDto);
+        //existedProduct(productDto);
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         product = productMapper.fromDtoToProduct(productDto);
         product.setId(id);
@@ -104,10 +104,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void assignProductToCategory(Long categoryId, Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
-        product.addCategory(category);
+    public Boolean assignProductToCategory(Long categoryId, Long productId) {
+        try {
+            Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+            Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
+            product.addCategory(category);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
     }
 
     @Override

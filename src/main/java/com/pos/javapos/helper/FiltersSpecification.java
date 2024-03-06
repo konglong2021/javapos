@@ -4,6 +4,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class FiltersSpecification<T> {
         return new Specification<T>() {
             @Override
             public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-                    return criteriaBuilder.equal(root.get(searchRequestDto.getColumn()), searchRequestDto.getValue());
+                    return criteriaBuilder.like(root.get(searchRequestDto.getColumn()), "%" + searchRequestDto.getValue() + "%");
             }
         };
     }
@@ -25,7 +26,7 @@ public class FiltersSpecification<T> {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             for(SearchRequestDto requestDto : searchRequestDtoList){
-                Predicate predicate = criteriaBuilder.equal(root.get(requestDto.getColumn()), requestDto.getValue());
+                Predicate predicate = criteriaBuilder.like(root.get(requestDto.getColumn()), "%" + requestDto.getValue() + "%");
                 predicates.add(predicate);
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

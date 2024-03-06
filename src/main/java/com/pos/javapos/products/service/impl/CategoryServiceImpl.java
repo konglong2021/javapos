@@ -1,7 +1,7 @@
 package com.pos.javapos.products.service.impl;
 
 import com.pos.javapos.helper.FiltersSpecification;
-import com.pos.javapos.helper.RequestDto;
+import com.pos.javapos.helper.dto.RequestDto;
 import com.pos.javapos.products.dto.CategoryDto;
 import com.pos.javapos.products.entity.Category;
 import com.pos.javapos.products.entity.Product;
@@ -10,16 +10,13 @@ import com.pos.javapos.products.repository.CategoryRepository;
 import com.pos.javapos.products.repository.ProductRepository;
 import com.pos.javapos.products.service.CategoryService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.stream.Collectors;
 
 @Service
@@ -58,8 +55,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto create(CategoryDto categoryDto) {
         Category category = categoryMapper.fromDtoToCategory(categoryDto);
-        categoryRepository.save(category);
-        return categoryDto;
+        category = categoryRepository.save(category);
+        return categoryMapper.fromCategoryToDto(category);
     }
 
     @Override
@@ -72,23 +69,40 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void delete(Long id) {
-        categoryRepository.deleteById(id);
+    public Boolean delete(Long id) {
+        try {
+            Category category = categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+            if (category.getProducts().size() > 0) {
+                throw new RuntimeException("Category has products");
+            }
+            categoryRepository.delete(category);
+            return true;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     @Transactional
-    public void assignCategoryToProduct(Long productId, Long categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
-        category.getProducts().add(product);
-        categoryRepository.save(category);
+    public Boolean assignCategoryToProduct(Long productId, Long categoryId) {
+        try {
+            Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
+            Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+            category.getProducts().add(product);
+            categoryRepository.save(category);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
     }
 
     @Override
+    @Cacheable("categories")
     public Page<CategoryDto> getAll(int page, int size, RequestDto requestDto) {
-        PageRequest pageRequest = PageRequest.of(page,size);
-//        Specification<Category> specification = filtersSpecification.getSearchSpecification(requestDto.getSearchRequestDto());
+        Sort.Direction sort = Sort.Direction.DESC;
+        String sortByColumn = "id";
+        PageRequest pageRequest = PageRequest.of(page,size,sort,sortByColumn);
         Specification<Category> specification = filtersSpecification.getSearchSpecificationList(requestDto.getSearchRequestDto());
         Page<Category> categories = categoryRepository.findAll(specification,pageRequest);
         return new PageImpl<>(categories.getContent().stream().map(category -> categoryMapper

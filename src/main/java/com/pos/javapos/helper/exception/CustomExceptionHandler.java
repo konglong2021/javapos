@@ -2,6 +2,7 @@ package com.pos.javapos.helper.exception;
 
 import com.pos.javapos.helper.ApiResponse;
 import org.springframework.dao.PermissionDeniedDataAccessException;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -72,6 +73,19 @@ public class CustomExceptionHandler {
         logger.log(Level.INFO, "Logging: " +ex.getMessage());
 //        ex.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, "Internal server error", null));
+    }
+
+    @ExceptionHandler(RedisConnectionFailureException.class)
+    public ResponseEntity<?> handleRedisConnectionFailureException(RedisConnectionFailureException ex) {
+        logger.log(Level.INFO, "Logging: " +ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, "Internal server error", null));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleRuntimeException(RuntimeException ex) {
+        logger.log(Level.INFO, "Logging: " +ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(false, ex.getLocalizedMessage(), null));
     }
 
 }

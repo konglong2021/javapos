@@ -8,6 +8,7 @@ import com.pos.javapos.authentication.service.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -35,6 +36,12 @@ public class TokenGenerator {
     @Qualifier("jwtRefreshTokenEncoder")
     JwtEncoder jwtRefreshTokenEncoder;
 
+    @Value("${JWT_EXPIRATION_TIME}")
+    private int jwt_exp;
+
+    @Value("${JWT_REFRESH_EXPIRATION_TIME}")
+    private int jwt_refresh_exp;
+
     private String createAccessToken(Authentication authentication){
         UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
         Instant now = Instant.now();
@@ -43,7 +50,7 @@ public class TokenGenerator {
                 .builder()
                 .issuer(user.getUsername())
                 .issuedAt(now)
-                .expiresAt(now.plus(1, ChronoUnit.DAYS))
+                .expiresAt(now.plus(jwt_exp, ChronoUnit.DAYS))
                 .subject(user.getId())
                 .build();
 
@@ -57,7 +64,7 @@ public class TokenGenerator {
         JwtClaimsSet claimsSet = JwtClaimsSet.builder()
                 .issuer(user.getUsername())
                 .issuedAt(now)
-                .expiresAt(now.plus(30, ChronoUnit.DAYS))
+                .expiresAt(now.plus(jwt_refresh_exp, ChronoUnit.DAYS))
                 .subject(user.getId())
                 .build();
         return jwtRefreshTokenEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
